@@ -1,0 +1,53 @@
+version: '3.1'
+services:
+    # DATABASES
+    db-dev:
+        container_name: db-dev
+        image: postgres:12-alpine
+        restart: always
+        ports:
+            - "5432:5432"
+        environment:
+            #POSTGRES_DB: db-dev
+            POSTGRES_MULTIPLE_DATABASES: db-dev,db-dev-service-b
+            POSTGRES_USER: dev
+            POSTGRES_PASSWORD: dev
+        volumes:
+            - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ./bancos/postgres/data-dev:/var/lib/postgresql/data
+
+    # BARRAMENTO DE MENSAGERIA
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3.7.5-management-alpine
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        environment:
+            RABBITMQ_DEFAULT_USER: klok
+            RABBITMQ_DEFAULT_PASS: klok
+
+    # SERVIÇOS
+    web-servico-a:
+        container_name: web-servico-a
+        image: openjdk:16-alpine
+        ports:
+            - "8080:8080"
+        command: java -Duser.timezone=GMT-03:00 -Xmx512m -Xmx256m -jar /xpto/servico-a.jar
+        volumes:
+            - ./servico-a/target/hub-0.0.1-SNAPSHOT.jar:/xpto/servico-a.jar
+        links:
+            - db-dev
+            - rabbitmq
+    
+    web-servico-b:
+        container_name: web-servico-b
+        image: openjdk:16-alpine
+        ports:
+            - "8081:8080"
+        command: java -Duser.timezone=GMT-03:00 -Xmx512m -Xmx256m -jar /xpto/servico-b.jar
+        volumes:
+            - ./servico-b/target/hub-0.0.1-SNAPSHOT.jar:/xpto/servico-b.jar
+        links:
+            - db-dev
+            - rabbitmq
