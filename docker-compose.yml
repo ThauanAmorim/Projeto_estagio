@@ -8,7 +8,6 @@ services:
         ports:
             - "5432:5432"
         environment:
-            #POSTGRES_DB: db-dev
             POSTGRES_MULTIPLE_DATABASES: db-dev,db-dev-service-b
             POSTGRES_USER: dev
             POSTGRES_PASSWORD: dev
@@ -30,7 +29,7 @@ services:
     # SERVIÇOS
     web-servico-a:
         container_name: web-servico-a
-        image: openjdk:16-alpine
+        image: openjdk:8-alpine
         ports:
             - "8080:8080"
         command: java -Duser.timezone=GMT-03:00 -Xmx512m -Xmx256m -jar /xpto/servico-a.jar
@@ -42,7 +41,7 @@ services:
     
     web-servico-b:
         container_name: web-servico-b
-        image: openjdk:16-alpine
+        image: openjdk:8-alpine
         ports:
             - "8081:8080"
         command: java -Duser.timezone=GMT-03:00 -Xmx512m -Xmx256m -jar /xpto/servico-b.jar

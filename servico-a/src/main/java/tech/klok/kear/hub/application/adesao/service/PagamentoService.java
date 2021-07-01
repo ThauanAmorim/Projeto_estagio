@@ -42,7 +42,7 @@ public class PagamentoService {
     public PagamentoModel getbyId(Long id) throws Exception {
         Optional<PagamentoModel> pagamentoOp = pagamentosRepository.findById(id);
 
-        if(pagamentoOp == null) {
+        if(pagamentoOp.isEmpty()) {
             throw new Exception("Produto não existe com esse ID");
         }
         return pagamentoOp.get();

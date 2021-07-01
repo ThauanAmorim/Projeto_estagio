@@ -34,7 +34,7 @@ public class ProdutoService {
     public ProdutoModel buscarPorId(Long id) throws Exception {
         Optional<ProdutoModel> opProduto = produtorepository.findById(id);
 
-        if(opProduto == null) throw new Exception("Produto não existente com esse ID");
+        if(opProduto.isEmpty()) throw new Exception("Produto não existente com esse ID");
         return opProduto.get();
     }
 }

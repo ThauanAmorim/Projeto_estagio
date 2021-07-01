@@ -19,14 +19,14 @@ public class UserService {
 
     public UserModel getUserById(Long id) throws Exception {
         Optional<UserModel> optionaluser = userRepository.findById(id);
-        if(optionaluser == null) throw new Exception("user não encontrado com esse ID");
+        if(optionaluser.isEmpty()) throw new Exception("user não encontrado com esse ID");
 
         return optionaluser.get();
     }
 
     public UserModel getByUsername(String username) throws Exception {
         Optional<UserModel> optionaluser = userRepository.findByUsername(username);
-        if(optionaluser == null) throw new Exception("user não encontrado com esse username");
+        if(optionaluser.isEmpty()) throw new Exception("user não encontrado com esse username");
 
         return optionaluser.get();
     }

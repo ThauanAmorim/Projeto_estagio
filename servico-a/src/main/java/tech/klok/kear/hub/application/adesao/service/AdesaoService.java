@@ -45,8 +45,8 @@ public class AdesaoService {
 
         Optional<ProdutoModel> produtoOp = produtorepository.findById(produtoID);
 
-        if(userOp == null) throw new Exception("User não existe");
-        if(produtoOp == null) throw new Exception("Produto não existe com esse ID");
+        if(userOp.isEmpty()) throw new Exception("User não existe");
+        if(produtoOp.isEmpty()) throw new Exception("Produto não existe com esse ID");
         validadeCamposObrigatorios(produtoID, respostasNaoConvertida);
         validateCampoInexistente(respostasNaoConvertida);
 
@@ -73,7 +73,7 @@ public class AdesaoService {
     public AdesaoModel buscarPorId(Long id) throws Exception {
         Optional<AdesaoModel> adesaoOp = adesaoRepository.findById(id);
 
-        if(adesaoOp == null) throw new Exception("Adesao não existente com esse id");
+        if(adesaoOp.isEmpty()) throw new Exception("Adesao não existente com esse id");
 
         return adesaoOp.get();
     }
@@ -88,7 +88,7 @@ public class AdesaoService {
     public AdesaoModel atualizar(Long adesaoId, AdesaoModel adesao) throws NaoEncontradoException {
         Optional<AdesaoModel> adesaoRecuperado = adesaoRepository.findById(adesaoId);
 
-        if(adesaoRecuperado == null) throw new NaoEncontradoException();
+        if(adesaoRecuperado.isEmpty()) throw new NaoEncontradoException();
 
         BeanUtils.copyProperties(adesao, adesaoRecuperado.get());
         return adesaoRepository.save(adesaoRecuperado.get());
