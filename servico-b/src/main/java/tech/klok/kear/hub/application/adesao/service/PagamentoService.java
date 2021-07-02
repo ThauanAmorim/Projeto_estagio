@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import tech.klok.kear.hub.domain.adesao.model.CobrancaModel;
 import tech.klok.kear.hub.domain.adesao.model.PagamentoModel;
+import tech.klok.kear.hub.domain.adesao.model.enums.CobrancaEnum;
 import tech.klok.kear.hub.infrastructure.persistence.repository.cobranca.CobrancasRepository;
 import tech.klok.kear.hub.infrastructure.persistence.repository.pagamento.PagamentosRepository;
 import tech.klok.kear.hub.presentation.pagamento.dto.PagamentoDTO;
@@ -27,6 +28,7 @@ public class PagamentoService {
         PagamentoModel pagamentosModel = new PagamentoModel(pagamentoDTO);
 
         cobrancasModel.get().setPagamento(pagamentosModel);
+        cobrancasModel.get().setStatus(CobrancaEnum.PAGA);
         cobrancasRepository.save(cobrancasModel.get());
         return pagamentosModel;
     }

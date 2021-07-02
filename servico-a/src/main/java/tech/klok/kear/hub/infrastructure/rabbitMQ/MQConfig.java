@@ -15,51 +15,25 @@ import org.springframework.amqp.support.converter.MessageConverter;
 @Configuration
 public class MQConfig {
 
-    public static final String LOGIN_QUEUE_CONTROLLER = "login_queue_controller";
-    public static final String LOGIN_QUEUE_SERVICE = "login_queue_service";
-    public static final String LOGIN_EXCHANGE_CONTROLLER = "login_exchange_controller";
-    public static final String LOGIN_EXCHANGE_SERVICE = "login_exchange_service";
-    public static final String ROUTING_KEY = "message_routingKey";
+    public static final String COBRANCA_QUEUE = "cobranca_queue";
+    public static final String COBRANCA_EXCHANGE = "cobranca_exchange";
+    public static final String ROUTING_KEY = "cobranca_routingKey";
 
-    
-    public Queue queue(String name) {
-        return new Queue(name);
+    @Bean
+    public Queue queue() {
+        return new Queue(COBRANCA_QUEUE);
     }
 
     @Bean
-    public Queue queue1() {
-        return new Queue(LOGIN_QUEUE_CONTROLLER);
+    public TopicExchange exchange () {
+        return new TopicExchange(COBRANCA_EXCHANGE);
     }
 
     @Bean
-    public Queue queue2() {
-        return new Queue(LOGIN_QUEUE_SERVICE);
-    }
-
-    @Bean
-    public TopicExchange exchange1 () {
-        return new TopicExchange(LOGIN_EXCHANGE_CONTROLLER);
-    }
-
-    @Bean
-    public TopicExchange exchange2 () {
-        return new TopicExchange(LOGIN_EXCHANGE_SERVICE);
-    }
-
-    @Bean
-    public Binding binding1(Queue queue1, TopicExchange exchange1) {
+    public Binding binding1(Queue queue, TopicExchange exchange) {
         Binding binding = BindingBuilder
-            .bind(queue1)
-            .to(exchange1)
-            .with(ROUTING_KEY);
-        return binding;
-    }
-    
-    @Bean
-    public Binding binding2(Queue queue2, TopicExchange exchange2) {
-        Binding binding = BindingBuilder
-            .bind(queue2)
-            .to(exchange2)
+            .bind(queue)
+            .to(exchange)
             .with(ROUTING_KEY);
         return binding;
     }

@@ -24,7 +24,7 @@ public class PagamentoController {
     @PostMapping
     public ResponseEntity<?> salvarPagamento(@RequestBody PagamentoDTO pagamentoDTO) {
         try {
-            PagamentoModel pagamento = pagamentoService.salvarPagamento(pagamentoDTO);
+            PagamentoDTO pagamento = pagamentoService.salvarPagamento(pagamentoDTO);
             return ResponseEntity.status(HttpStatus.OK).body(pagamento);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -34,7 +34,7 @@ public class PagamentoController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getbyId(@PathVariable("id") Long id) {
         try {
-            PagamentoModel pagamento = pagamentoService.getbyId(id);
+            PagamentoDTO pagamento = pagamentoService.getbyId(id);
             return ResponseEntity.status(HttpStatus.OK).body(pagamento);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -53,7 +53,8 @@ public class PagamentoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(pagamentoService.delete(id));
+            pagamentoService.delete(id);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.getMessage());
         }

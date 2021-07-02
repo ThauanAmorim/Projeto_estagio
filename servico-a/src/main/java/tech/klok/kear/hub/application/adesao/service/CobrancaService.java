@@ -1,10 +1,13 @@
 package tech.klok.kear.hub.application.adesao.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import tech.klok.kear.hub.domain.adesao.model.AdesaoModel;
 import tech.klok.kear.hub.domain.adesao.model.CobrancaModel;
@@ -13,19 +16,14 @@ import tech.klok.kear.hub.presentation.cobranca.dto.CobrancaDTO;
 
 @Service
 public class CobrancaService {
-    @Autowired
-    private AdesaoRepository adesaoRepository;
 
-    public AdesaoModel salvarCobranca (CobrancaDTO cobrancaDTO) {
-        System.out.println(new Date(System.currentTimeMillis()));
-        Optional<AdesaoModel> adesaoModel = adesaoRepository.findById(cobrancaDTO.getIdAdesao());
+    private RestTemplate template = new RestTemplate();
 
-        if(adesaoModel == null) return null;
+    public List<CobrancaDTO> listarTodos() {
+        return template.getForObject("http://localhost:8081/api-servico-b/cobranca", List.class);
+    }
 
-        CobrancaModel cobrancasModel = new CobrancaModel(cobrancaDTO);
-
-        adesaoModel.get().addCobranca(cobrancasModel);
-
-        return adesaoRepository.save(adesaoModel.get());
+    public List<CobrancaDTO> getAllCobrancasByIdAdesao(long id) {
+        return template.getForObject("http://localhost:8081/api-servico-b/cobranca/" + id, List.class);
     }
 }

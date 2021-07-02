@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.klok.kear.hub.domain.adesao.model.ProdutoModel;
+import tech.klok.kear.hub.infrastructure.exceptions.NaoEncontradoException;
 import tech.klok.kear.hub.infrastructure.persistence.repository.produto.Produtorepository;
 
 @Service
@@ -27,14 +28,16 @@ public class ProdutoService {
         }
     }
 
-    public List<ProdutoModel> listarTodos() {
-        return produtorepository.findAll();
+    public List<ProdutoModel> listarTodos() throws NaoEncontradoException {
+        List<ProdutoModel> lista = produtorepository.findAll();
+        if(lista.isEmpty()) throw new NaoEncontradoException();
+        return lista;
     }
 
     public ProdutoModel buscarPorId(Long id) throws Exception {
         Optional<ProdutoModel> opProduto = produtorepository.findById(id);
 
-        if(opProduto.isEmpty()) throw new Exception("Produto não existente com esse ID");
+        if(opProduto == null) throw new Exception("Produto não existente com esse ID");
         return opProduto.get();
     }
 }

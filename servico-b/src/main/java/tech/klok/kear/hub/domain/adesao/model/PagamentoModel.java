@@ -9,17 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import tech.klok.kear.hub.presentation.pagamento.dto.PagamentoDTO;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "T_PAGAMENTO")
 public class PagamentoModel implements Serializable {
@@ -33,8 +24,37 @@ public class PagamentoModel implements Serializable {
     @Column(name = "DATA_PAGAMENTO")
     private Date dataPagamento;
 
+    public PagamentoModel() {
+    }
+
+    public PagamentoModel(Long id, Date dataPagamento) {
+        this.id = id;
+        this.dataPagamento = dataPagamento;
+    }
+
     public PagamentoModel (PagamentoDTO pagamentoDTO) {
         this.dataPagamento = pagamentoDTO.getDataPagamento();
     }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getDataPagamento() {
+        return dataPagamento;
+    }
+
+    public void setDataPagamento(Date dataPagamento) {
+        this.dataPagamento = dataPagamento;
+    }
+    
 }
  

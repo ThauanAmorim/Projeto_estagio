@@ -15,7 +15,7 @@ import tech.klok.kear.hub.domain.adesao.model.PagamentoModel;
 import tech.klok.kear.hub.presentation.pagamento.dto.PagamentoDTO;
 
 @RestController
-@RequestMapping("/api/pagamento")
+@RequestMapping("/api-servico-b/pagamento")
 public class PagamentoController {
     
     @Autowired
@@ -35,7 +35,8 @@ public class PagamentoController {
     public ResponseEntity<?> getbyId(@PathVariable("id") Long id) {
         try {
             PagamentoModel pagamento = pagamentoService.getbyId(id);
-            return ResponseEntity.status(HttpStatus.OK).body(pagamento);
+            PagamentoDTO dto = new PagamentoDTO(pagamento.getId(), pagamento.getDataPagamento());
+            return ResponseEntity.status(HttpStatus.OK).body(dto);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

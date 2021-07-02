@@ -16,22 +16,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import tech.klok.kear.hub.domain.adesao.model.enums.Genero;
 import tech.klok.kear.hub.domain.adesao.model.enums.EstadoCivil;
 import tech.klok.kear.hub.presentation.user.dto.UserDTO;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Data
-@Builder
 @Entity
 @Table(name = "T_USER")
 public class UserModel implements Serializable {
@@ -64,6 +52,21 @@ public class UserModel implements Serializable {
     @JoinColumn(name = "USER_ID_FK")
     private List<AdesaoModel> listaAdesoes = new ArrayList<>();
     
+    public UserModel() {
+    }
+
+    public UserModel(Long id, String cPF, Enum genero, Enum estadoCivil, String username, String senha,
+            Date dataRegistro, List<AdesaoModel> listaAdesoes) {
+        this.id = id;
+        CPF = cPF;
+        this.genero = genero;
+        this.estadoCivil = estadoCivil;
+        this.username = username;
+        this.senha = senha;
+        this.dataRegistro = dataRegistro;
+        this.listaAdesoes = listaAdesoes;
+    }
+
     public UserModel(UserDTO userDto) {
         this.CPF = userDto.getCPF();
         this.genero = userDto.getGenero();
@@ -73,14 +76,30 @@ public class UserModel implements Serializable {
         this.dataRegistro = new Date(System.currentTimeMillis());
     }
 
-    public boolean addAdesao (AdesaoModel adesaoModel) {
-        if (!listaAdesoes.contains(adesaoModel)) {
-            listaAdesoes.add(adesaoModel);
-            return true;
-        }
-        return false;
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
-    
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCPF() {
+        return CPF;
+    }
+
+    public void setCPF(String cPF) {
+        CPF = cPF;
+    }
+
+    public Enum getGenero() {
+        return genero;
+    }
+
     public void setGenero(int id) {
         for(Genero gender : Genero.values()) {
             if(gender.getId() == id) {
@@ -88,12 +107,56 @@ public class UserModel implements Serializable {
             }
         }
     }
-    
+
+    public Enum getEstadoCivil() {
+        return estadoCivil;
+    }
+
     public void setEstadoCivil(int id) {
         for(EstadoCivil marital : EstadoCivil.values()) {
             if(marital.getId() == id) {
                 this.estadoCivil = marital;
             }
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public Date getDataRegistro() {
+        return dataRegistro;
+    }
+
+    public void setDataRegistro(Date dataRegistro) {
+        this.dataRegistro = dataRegistro;
+    }
+
+    public List<AdesaoModel> getListaAdesoes() {
+        return listaAdesoes;
+    }
+
+    public void setListaAdesoes(List<AdesaoModel> listaAdesoes) {
+        this.listaAdesoes = listaAdesoes;
+    }
+
+    public boolean addAdesao (AdesaoModel adesaoModel) {
+        if (!listaAdesoes.contains(adesaoModel)) {
+            listaAdesoes.add(adesaoModel);
+            return true;
+        }
+        return false;
     }
 }
